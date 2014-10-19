@@ -33,32 +33,20 @@ minecraft {
 
 dependencies {
     testCompile 'junit:junit:4.11'
-    
-    //compile "some.group:artifact:version:classifier"
-    //compile "some.group:artifact:version"
-      
-    // real examples
-    //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
 }
 
 processResources
 {
-    // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
-    // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-        // replace version and mcversion
         expand 'version':project.version, 'mcversion':project.minecraft.version
     }
-    // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
 }
-
 
 task writePom << {
   pom {
@@ -86,10 +74,7 @@ pmd {
   ignoreFailures = true
   sourceSets = [sourceSets.main]
   reportsDir = file("$project.buildDir/reports/pmd")
-  ruleSets = [
-    "basic",
-    "braces"
-  ]
+  ruleSets = [ "java-basic", "java-strings", "java-braces" ]
 }
 
 check << {
